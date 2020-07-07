@@ -1154,7 +1154,7 @@
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="290" parent="280" name="ENCRYTED_PASSWORD">
+    <column id="290" parent="280" name="ENCRYPTED_PASSWORD">
       <Position>3</Position>
       <DataType>varchar(128)|0s</DataType>
       <NotNull>1</NotNull>

@@ -9,7 +9,7 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Repository
+@Repository //accessing database
 @Transactional
 public class RoleDAO extends JdbcDaoSupport {
 

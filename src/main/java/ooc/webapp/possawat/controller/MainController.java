@@ -2,9 +2,11 @@ package ooc.webapp.possawat.controller;
 
 
 import java.security.Principal;
+import java.util.ArrayList;
 
+import lombok.var;
+import ooc.webapp.possawat.service.ListingService;
 import ooc.webapp.possawat.utilities.WebUtils;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -12,8 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class MainController {
@@ -31,10 +31,13 @@ public class MainController {
     public String adminPage(Model model, Principal principal) {
 
         User loginedUser = (User) ((Authentication) principal).getPrincipal();
+        //only admin can log in here
 
         String userInfo = WebUtils.toString(loginedUser);
         model.addAttribute("userInfo", userInfo);
-
+        ListingService listingService = new ListingService();
+        var users = listingService.findAll();
+        model.addAttribute("appUserList", users);
         return "adminPage";
     }
 
@@ -56,7 +59,7 @@ public class MainController {
         // After user login successfully.
         String userName = principal.getName();
 
-        System.out.println("User Name: " + userName);
+        System.out.println("AppUser Name: " + userName);
 
         User loggedinUser = (User) ((Authentication) principal).getPrincipal();
 
@@ -85,4 +88,7 @@ public class MainController {
         return "welcomePage";
     }
 
+    //add
+    //remove
+    //list table
 }

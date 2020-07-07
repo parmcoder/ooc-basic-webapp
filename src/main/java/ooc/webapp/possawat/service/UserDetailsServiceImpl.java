@@ -5,7 +5,7 @@ import java.util.List;
 
 import ooc.webapp.possawat.dao.RoleDAO;
 import ooc.webapp.possawat.dao.UserDAO;
-import ooc.webapp.possawat.model.Users;
+import ooc.webapp.possawat.model.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -26,14 +26,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        Users appUser = this.UserDAO.findUserAccount(userName);
+        AppUser appUser = this.UserDAO.findUserAccount(userName);
 
         if (appUser == null) {
-            System.out.println("User not found! " + userName);
-            throw new UsernameNotFoundException("User " + userName + " was not found in the database");
+            System.out.println("AppUser not found! " + userName);
+            throw new UsernameNotFoundException("AppUser " + userName + " was not found in the database");
         }
 
-        System.out.println("Found User: " + appUser);
+        System.out.println("Found AppUser: " + appUser);
 
         // [ROLE_USER, ROLE_ADMIN,..]
         List<String> roleNames = this.RoleDAO.getRoleNames(appUser.getUserId());
@@ -48,7 +48,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         UserDetails userDetails = new User(appUser.getUserName(), //
-                appUser.getEncrytedPassword(), grantList);
+                appUser.getEncryptedPassword(), grantList);
 
         return userDetails;
     }

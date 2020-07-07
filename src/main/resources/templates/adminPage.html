@@ -12,7 +12,16 @@
     <span th:utext="${#request.userPrincipal.name}"></span>
 </h3>
 <b>This is protected page!</b>
-
+<table>
+    <tr>
+        <th>ID</th>
+        <th>USERNAME</th>
+    </tr>
+    <tr th:each="appUser : ${appUserList}">
+        <td th:text="${appUser.getUserId()}"></td>
+        <td th:text="${appUser.getUserName()}"></td>
+    </tr>
+</table>
 <br/><br/>
 
 <div th:if="${userInfo != null}" th:utext="${userInfo}"></div>

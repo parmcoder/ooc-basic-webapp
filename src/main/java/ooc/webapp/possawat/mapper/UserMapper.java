@@ -3,22 +3,23 @@ package ooc.webapp.possawat.mapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import ooc.webapp.possawat.model.Users;
+import ooc.webapp.possawat.model.AppUser;
 import org.springframework.jdbc.core.RowMapper;
 
-public class UserMapper implements RowMapper<Users> {
+//better collect data and store it in
+public class UserMapper implements RowMapper<AppUser> {
 
     public static final String BASE_SQL
-            = "SELECT u.User_Id, u.User_Name, u.Encryted_Password From APP_USER u ";
+            = "SELECT u.User_Id, u.User_Name, u.Encrypted_Password From APP_USER u ";
 
     @Override
-    public Users mapRow(ResultSet rs, int rowNum) throws SQLException {
+    public AppUser mapRow(ResultSet rs, int rowNum) throws SQLException {
+        AppUser appUser = new AppUser();
+        appUser.setUserId( rs.getLong("USER_ID"));
+        appUser.setUserName(rs.getString("USER_NAME"));
+        appUser.setEncryptedPassword(rs.getString("ENCRYPTED_PASSWORD"));
 
-        Long userId = rs.getLong("USER_ID");
-        String userName = rs.getString("USER_NAME");
-        String encrytedPassword = rs.getString("ENCRYTED_PASSWORD");
-
-        return new Users(userId, userName, encrytedPassword);
+        return appUser;
     }
 
 }
