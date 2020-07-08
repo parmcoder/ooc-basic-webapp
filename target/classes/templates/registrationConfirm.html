@@ -7,12 +7,12 @@
 <!-- Include _menu.html -->
 <th:block th:include="/_menu"></th:block>
 
-<h1>Registration</h1>
+<h1>Registration Confirmation</h1>
 
 <h3>Enter username and password:</h3>
 <form action="#" th:action="@{/registration}" th:object="${userToAdd}" method="post">
     <p>Id: <input type="text" th:field="*{userName}" /></p>
-    <p>Password: <input type="text" th:field="*{encryptedPassword}" /></p>
+    <p>Password: <input type="text" th:field="*{encryptePassword}" /></p>
     <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
 </form>
 

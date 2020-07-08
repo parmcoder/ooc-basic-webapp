@@ -16,6 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/*
+ * https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/jdbc/core/JdbcTemplate.html
+ */
+
 @Repository //accessing database
 public class UserDAO extends JdbcDaoSupport {
     private UserMapper mapper = new UserMapper();
@@ -29,12 +33,10 @@ public class UserDAO extends JdbcDaoSupport {
     }
 
     public AppUser findUserAccount(String userName) {
-        // Select .. from App_User u Where u.User_Name = ?
         String sql = UserMapper.BASE_SQL + " where u.User_Name = ? ";
 
         Object[] params = new Object[] { userName };
         try {
-            //https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/jdbc/core/JdbcTemplate.html
             AppUser appUserInfo = getJdbcTemplate().queryForObject(sql, params, mapper);
 //            this.createJdbcTemplate()
             return appUserInfo;
@@ -44,10 +46,8 @@ public class UserDAO extends JdbcDaoSupport {
     }
 
     public List<AppUser> getAllUsers() {
-        // Select .. from App_User u Where u.User_Name = ?
         String sql = UserMapper.BASE_SQL;
         List<AppUser> resultList;
-        //https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/jdbc/core/JdbcTemplate.html
         try{
             resultList = getJdbcTemplate().query(sql, mapper);
 
@@ -83,6 +83,22 @@ public class UserDAO extends JdbcDaoSupport {
             }
             params = new Object[]{ lastRole, lastId, 2};
             getJdbcTemplate().update(sqlForInsert2, params);
+        }catch(EmptyResultDataAccessException e){
+            System.out.println("Null!");
+        }
+    }
+
+    public void removeUser(AppUser user){
+        /*
+        ? Remove user from both tables
+         */
+
+        String sqlForRemove1 = "delete from APP_USER where USER_ID = ?;";
+        String sqlForRemove2 = "delete from USER_ROLE where USER_ID = ?;";
+        try{
+            Object[] params = new Object[]{ user.getUserId() };
+            getJdbcTemplate().update(sqlForRemove2, params);
+            getJdbcTemplate().update(sqlForRemove1, params);
         }catch(EmptyResultDataAccessException e){
             System.out.println("Null!");
         }

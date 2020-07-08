@@ -12,7 +12,7 @@
     <span th:utext="${#request.userPrincipal.name}"></span>
 </h3>
 <b>This is protected page!</b>
-<h1><span th:utext="${errorMsg}"></span></h1>
+<h2><span th:utext="${message}"></span></h2>
 <table>
     <tr>
         <th>ID</th>
@@ -21,6 +21,15 @@
     <tr th:each="appUser : ${appUserList}">
         <td th:text="${appUser.getUserId()}"></td>
         <td th:text="${appUser.getUserName()}"></td>
+        <td>
+            <form action="#" th:action="@{/remove}" th:object="${appUser}" method="post">
+                <input type="hidden" th:value="${appUser.getUserId()}">
+                <input type="hidden" th:value="${appUser.getUserName()}">
+                <button type="submit">
+                    <i>Remove</i>
+                </button>
+            </form>
+        </td>
     </tr>
 </table>
 <br/><br/>

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class MainController {
 
     @Autowired
-    IAdminService listingService;
+    IAdminService adminService;
 
     @RequestMapping(value = "/welcome", method = RequestMethod.GET)
     public String welcomePage(Model model) {
@@ -30,20 +30,44 @@ public class MainController {
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
-    public String addUserForm(Model model, Principal principal){
+    public String addUserForm(Model model){
         model.addAttribute("userToAdd", new AppUser());
-        return "adding";
+        String confirmPassword = new String();
+        model.addAttribute("confirmPassword", confirmPassword);
+
+        return "registration";
     }
 
     @PostMapping(value = "/registration")
     public String addUserSubmit(@ModelAttribute AppUser user){
-        return "removeUser";
+        adminService.addNewUser(user);
+        return "redirect:admin";
     }
 
-    @RequestMapping(value = "/remove", method = RequestMethod.GET)
-    public String remove(Model model, Principal principal){
-        return "remove";
+    /*
+    ! Still, the remove confirmation cannot take the variable across the page.
+     */
+    @PostMapping(value = "/remove")
+    public String remove(@ModelAttribute(value="userRow") AppUser user, Model model){
+        model.addAttribute("toRemove", user);
+        return "removeConfirm";
     }
+
+    @RequestMapping(value = "/removeConfirm", method = RequestMethod.GET)
+    public String confirmRemove(Model model){
+        AppUser chosen = (AppUser) model.getAttribute("toRemove");
+        model.addAttribute("removing", chosen);
+        return "removeConfirm";
+    }
+    @PostMapping(value = "/removeConfirm")
+    public String confirmRemoveClicked(@ModelAttribute(value="removing") AppUser user){
+        adminService.removeUser(user);
+        return "admin";
+    }
+
+    /*
+    ! Fix above methods.
+     */
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String adminPage(Model model, Principal principal) {
@@ -53,8 +77,10 @@ public class MainController {
 
         String userInfo = WebUtils.toString(loginedUser);
         model.addAttribute("userInfo", userInfo);
-        var users = listingService.findAll();
+        var users = adminService.findAll();
         model.addAttribute("appUserList", users);
+        model.addAttribute("userRow", new AppUser());
+
         return "adminPage";
     }
 
