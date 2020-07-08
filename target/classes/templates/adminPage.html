@@ -12,6 +12,7 @@
     <span th:utext="${#request.userPrincipal.name}"></span>
 </h3>
 <b>This is protected page!</b>
+<h1><span th:utext="${errorMsg}"></span></h1>
 <table>
     <tr>
         <th>ID</th>
@@ -23,6 +24,7 @@
     </tr>
 </table>
 <br/><br/>
+<a href='/registration'><button>Add user</button></a>
 
 <div th:if="${userInfo != null}" th:utext="${userInfo}"></div>
 

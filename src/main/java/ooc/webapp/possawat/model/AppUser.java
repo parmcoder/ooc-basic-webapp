@@ -1,8 +1,14 @@
 package ooc.webapp.possawat.model;
 
-public class AppUser {
+import javax.persistence.*;
 
+@Entity
+@Table(name = "APP_USER")
+public class AppUser {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userId;
+
     private String userName;
     private String encryptedPassword;
 

@@ -4,6 +4,8 @@ import ooc.webapp.possawat.model.AppUser;
 
 import java.util.List;
 
-public interface IListingService {
+public interface IAdminService {
     List<AppUser> findAll();
+    void addNewUser();
+    void removeUser(String password);
 }

@@ -2,29 +2,47 @@ package ooc.webapp.possawat.controller;
 
 
 import java.security.Principal;
-import java.util.ArrayList;
 
 import lombok.var;
-import ooc.webapp.possawat.service.ListingService;
+import ooc.webapp.possawat.model.AppUser;
+import ooc.webapp.possawat.service.IAdminService;
 import ooc.webapp.possawat.utilities.WebUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 
 @Controller
 public class MainController {
 
-    @RequestMapping(value = { "/", "/welcome" }, method = RequestMethod.GET)
+    @Autowired
+    IAdminService listingService;
+
+    @RequestMapping(value = "/welcome", method = RequestMethod.GET)
     public String welcomePage(Model model) {
         model.addAttribute("title", "Welcome");
         model.addAttribute("message", "This is welcome page!");
         return "welcomePage";
-//        return "redirect:/login";
+    }
 
+    @RequestMapping(value = "/registration", method = RequestMethod.GET)
+    public String addUserForm(Model model, Principal principal){
+        model.addAttribute("userToAdd", new AppUser());
+        return "adding";
+    }
+
+    @PostMapping(value = "/registration")
+    public String addUserSubmit(@ModelAttribute AppUser user){
+        return "removeUser";
+    }
+
+    @RequestMapping(value = "/remove", method = RequestMethod.GET)
+    public String remove(Model model, Principal principal){
+        return "remove";
     }
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
@@ -35,15 +53,18 @@ public class MainController {
 
         String userInfo = WebUtils.toString(loginedUser);
         model.addAttribute("userInfo", userInfo);
-        ListingService listingService = new ListingService();
         var users = listingService.findAll();
         model.addAttribute("appUserList", users);
         return "adminPage";
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String loginPage(Model model) {
-
+    @RequestMapping(value = { "/", "/login"}, method = RequestMethod.GET)
+    public String loginPage(Model model, Principal principal) {
+        if (principal != null) {
+            User loggedinUser = (User) ((Authentication) principal).getPrincipal();
+            if(loggedinUser.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) return "redirect:admin";
+            else return "redirect:userInfo";
+        }
         return "loginPage";
     }
 
@@ -88,7 +109,4 @@ public class MainController {
         return "welcomePage";
     }
 
-    //add
-    //remove
-    //list table
 }
