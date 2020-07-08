@@ -21,11 +21,13 @@
     <tr th:each="appUser : ${appUserList}">
         <td th:text="${appUser.getUserId()}"></td>
         <td th:text="${appUser.getUserName()}"></td>
+
+        <!-- Something is wrong here. -->
         <td>
-            <form action="#" th:action="@{/remove}" th:object="${appUser}" method="post">
-                <input type="hidden" th:value="${appUser.getUserId()}">
-                <input type="hidden" th:value="${appUser.getUserName()}">
-                <button type="submit">
+            <form action="#" th:action="@{/remove}" th:object="${userRow}" method="get">
+                <input type="hidden" name="userId" th:value="${appUser.getUserId()}">
+                <input type="hidden" name="userName" th:value="${appUser.getUserName()}">
+                <button th:if="${appUser.getUserName() != #request.userPrincipal.name}" type="submit">
                     <i>Remove</i>
                 </button>
             </form>

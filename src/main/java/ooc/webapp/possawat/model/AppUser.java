@@ -16,6 +16,11 @@ public class AppUser {
 
     }
 
+    public AppUser(Long userId, String userName) {
+        this.userId = userId;
+        this.userName = userName;
+    }
+
     public AppUser(Long userId, String userName, String encryptedPassword) {
         this.userId = userId;
         this.userName = userName;

@@ -6,6 +6,7 @@ import java.security.Principal;
 import lombok.var;
 import ooc.webapp.possawat.model.AppUser;
 import ooc.webapp.possawat.service.IAdminService;
+import ooc.webapp.possawat.service.UserDetailsServiceImpl;
 import ooc.webapp.possawat.utilities.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -21,6 +22,9 @@ public class MainController {
 
     @Autowired
     IAdminService adminService;
+
+    @Autowired
+    UserDetailsServiceImpl userDetailsService;
 
     @RequestMapping(value = "/welcome", method = RequestMethod.GET)
     public String welcomePage(Model model) {
@@ -44,31 +48,6 @@ public class MainController {
         return "redirect:admin";
     }
 
-    /*
-    ! Still, the remove confirmation cannot take the variable across the page.
-     */
-    @PostMapping(value = "/remove")
-    public String remove(@ModelAttribute(value="userRow") AppUser user, Model model){
-        model.addAttribute("toRemove", user);
-        return "removeConfirm";
-    }
-
-    @RequestMapping(value = "/removeConfirm", method = RequestMethod.GET)
-    public String confirmRemove(Model model){
-        AppUser chosen = (AppUser) model.getAttribute("toRemove");
-        model.addAttribute("removing", chosen);
-        return "removeConfirm";
-    }
-    @PostMapping(value = "/removeConfirm")
-    public String confirmRemoveClicked(@ModelAttribute(value="removing") AppUser user){
-        adminService.removeUser(user);
-        return "admin";
-    }
-
-    /*
-    ! Fix above methods.
-     */
-
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String adminPage(Model model, Principal principal) {
 
@@ -82,6 +61,17 @@ public class MainController {
         model.addAttribute("userRow", new AppUser());
 
         return "adminPage";
+    }
+
+    @RequestMapping(value = "/remove", method = RequestMethod.GET)
+    public String remove(@ModelAttribute("userRow") AppUser user, Model model){
+        return "removeConfirm";
+    }
+
+    @PostMapping(value = "/remove")
+    public String confirmRemoveClicked(@ModelAttribute("userRow") AppUser user){
+        adminService.removeUser(user);
+        return "redirect:admin";
     }
 
     @RequestMapping(value = { "/", "/login"}, method = RequestMethod.GET)
@@ -113,7 +103,16 @@ public class MainController {
         String userInfo = WebUtils.toString(loggedinUser);
         model.addAttribute("userInfo", userInfo);
 
+        AppUser editUser = new AppUser();
+        model.addAttribute("newUserName", editUser);
+
         return "userInfoPage";
+    }
+
+    @PostMapping(value = "/userInfo")
+    public String updateUserInfo(@ModelAttribute("newUserName") AppUser userName, Principal principal) {
+        adminService.changeUserName(principal.getName(), userName);
+        return "redirect:logout";
     }
 
     @RequestMapping(value = {"/403"}, method = RequestMethod.GET)

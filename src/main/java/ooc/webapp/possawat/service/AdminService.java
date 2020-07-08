@@ -44,4 +44,13 @@ public class AdminService implements IAdminService {
         return false;
     }
 
+    public void changeUserName(String userName, AppUser user){
+
+        AppUser appUser = this.UserDAO.findUserAccount(userName);
+        if(checkExistedUser(user)){
+            return;
+        }
+        appUser.setUserName(user.getUserName());
+        this.UserDAO.updateUser(appUser);
+    }
 }

@@ -13,4 +13,5 @@ public interface IAdminService {
 
     void addNewUser(AppUser user);
 
+    void changeUserName(String userName, AppUser user);
 }

@@ -7,14 +7,16 @@
 <!-- Include _menu.html -->
 <th:block th:include="/_menu"></th:block>
 
-<h1>Do you want to remove this user?</h1>
-<td th:text="${toRemove.getUserName()}"></td>
-<form action="#" th:action="@{/removeConfirm}" th:object="${toRemove}" method="post">
+<h1>Do you want to remove this user? </h1>
+<h3>username = <td th:text="${userRow.getUserName()}"></td></h3>
+<form action="#" th:action="@{/remove}" th:object="${userRow}" method="post">
+    <input type="hidden" name="userId" th:value="${userRow.getUserId()}">
+    <input type="hidden" name="userName" th:value="${userRow.getUserName()}">
     <button type="submit">
         <i>Remove</i>
     </button>
 </form>
-<form action="#" th:action="@{/}" method="post">
+<form action="#" th:action="@{/}" method="get">
     <button type="submit">
         <i>Cancel</i>
     </button>

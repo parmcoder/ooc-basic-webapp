@@ -10,11 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /*
  * https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/jdbc/core/JdbcTemplate.html
@@ -38,7 +35,6 @@ public class UserDAO extends JdbcDaoSupport {
         Object[] params = new Object[] { userName };
         try {
             AppUser appUserInfo = getJdbcTemplate().queryForObject(sql, params, mapper);
-//            this.createJdbcTemplate()
             return appUserInfo;
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -103,4 +99,21 @@ public class UserDAO extends JdbcDaoSupport {
             System.out.println("Null!");
         }
     }
+
+    public void updateUser(AppUser user){
+        /*
+        ? Remove user from both tables
+         */
+
+        String sqlForUpdate = "update APP_USER set USER_NAME = ? where USER_ID = ?";
+//        String sqlForRemove2 = "delete from USER_ROLE where USER_ID = ?;";
+        try{
+            Object[] params = new Object[]{ user.getUserName(), user.getUserId() };
+            getJdbcTemplate().update(sqlForUpdate, params);
+//            getJdbcTemplate().update(sqlForRemove1, params);
+        }catch(EmptyResultDataAccessException e){
+            System.out.println("Null!");
+        }
+    }
+
 }
