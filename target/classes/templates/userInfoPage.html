@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Info</title>
+</head>
+<body>
+<!-- Include _menu.html -->
+<th:block th:include="/_menu"></th:block>
+
+
+<h2>User Info Page</h2>
+<h3>Welcome : <span th:utext="${#request.userPrincipal.name}"></span></h3>
+
+<form action="#" th:action="@{/userInfo}" th:object="${newUserName}" method="post">
+    <input type="text" th:field="*{userName}">
+    <button type="submit">
+        <i>Change Username</i>
+    </button>
+</form>
+<br/><br/>
+
+<b>Note: You will automatically logout</b>
+
+<div th:if="${userInfo != null}" th:utext="${userInfo}"></div>
+
+</body>
+
+</html>
