@@ -10,7 +10,7 @@ import org.springframework.jdbc.core.RowMapper;
 public class UserMapper implements RowMapper<AppUser> {
 
     public static final String BASE_SQL
-            = "SELECT u.User_Id, u.User_Name, u.Encrypted_Password From APP_USER u ";
+            = "SELECT * From APP_USER u ";
 
     @Override
     public AppUser mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -18,6 +18,7 @@ public class UserMapper implements RowMapper<AppUser> {
         appUser.setUserId( rs.getLong("USER_ID"));
         appUser.setUserName(rs.getString("USER_NAME"));
         appUser.setEncryptedPassword(rs.getString("ENCRYPTED_PASSWORD"));
+        appUser.setStatus( rs.getString("USER_STATUS"));
 
         return appUser;
     }

@@ -3,7 +3,6 @@ package ooc.webapp.possawat.service;
 import ooc.webapp.possawat.dao.UserDAO;
 import ooc.webapp.possawat.model.AppUser;
 import ooc.webapp.possawat.utilities.EncryptorUtils;
-import ooc.webapp.possawat.utilities.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,19 +20,41 @@ public class AdminService implements IAdminService {
     }
 
     @Override
-    public void addNewUser(AppUser user) {
+    public Boolean addNewUser(AppUser user) {
         if(checkExistedUser(user)){
-            return;
+            return false;
         }
         user.setEncryptedPassword(EncryptorUtils.encryptPassword(user.getEncryptedPassword()));
         this.UserDAO.insertUser(user,0);
+        return true;
     }
 
     @Override
-    public void removeUser(AppUser user) {
+    public Boolean updateUserInfo(String userName, AppUser user) {
+        Boolean result = true;
+        AppUser appUser = this.UserDAO.findUserAccount(userName);
+        appUser.setStatus(user.getStatus());
+        if(!user.getUserName().isEmpty() && !checkExistedUser(user)){
+            appUser.setUserName(user.getUserName());
+        }else{
+            result = false;
+        }
+        this.UserDAO.updateUser(appUser);
+        return result;
+    }
+
+    @Override
+    public AppUser getCurrentInfo(String username) {
+        return this.UserDAO.findUserAccount(username);
+    }
+
+    @Override
+    public Boolean removeUser(AppUser user) {
         if(checkExistedUser(user)){
             this.UserDAO.removeUser(user);
+            return true;
         }
+        return false;
     }
 
     @Override
@@ -44,13 +65,4 @@ public class AdminService implements IAdminService {
         return false;
     }
 
-    public void changeUserName(String userName, AppUser user){
-
-        AppUser appUser = this.UserDAO.findUserAccount(userName);
-        if(checkExistedUser(user)){
-            return;
-        }
-        appUser.setUserName(user.getUserName());
-        this.UserDAO.updateUser(appUser);
-    }
 }

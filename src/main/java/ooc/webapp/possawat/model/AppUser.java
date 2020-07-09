@@ -11,11 +11,10 @@ public class AppUser {
 
     private String userName;
     private String encryptedPassword;
-
     /*
-    ? might add another attributes here
-    ? status(varchar 200)
+    * just for fun
      */
+    private String status;
 
 
     public AppUser() {
@@ -31,6 +30,13 @@ public class AppUser {
         this.userId = userId;
         this.userName = userName;
         this.encryptedPassword = encryptedPassword;
+    }
+
+    public AppUser(Long userId, String userName, String encryptedPassword, String status) {
+        this.userId = userId;
+        this.userName = userName;
+        this.encryptedPassword = encryptedPassword;
+        this.status = status;
     }
 
     public Long getUserId() {
@@ -55,6 +61,14 @@ public class AppUser {
 
     public void setEncryptedPassword(String encrytedPassword) {
         this.encryptedPassword = encrytedPassword;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override

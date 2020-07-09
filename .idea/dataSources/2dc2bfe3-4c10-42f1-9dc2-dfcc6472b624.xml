@@ -1142,118 +1142,123 @@
       <ColNames>ROLE_NAME</ColNames>
       <UnderlyingIndexName>APP_ROLE_UK</UnderlyingIndexName>
     </key>
-    <column id="288" parent="280" name="USER_ID">
+    <column id="288" parent="280" name="USER_STATUS">
       <Position>1</Position>
+      <DataType>varchar(200)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="289" parent="280" name="USER_ID">
+      <Position>2</Position>
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="289" parent="280" name="USER_NAME">
-      <Position>2</Position>
+    <column id="290" parent="280" name="USER_NAME">
+      <Position>3</Position>
       <DataType>varchar(36)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="290" parent="280" name="ENCRYPTED_PASSWORD">
-      <Position>3</Position>
+    <column id="291" parent="280" name="ENCRYPTED_PASSWORD">
+      <Position>4</Position>
       <DataType>varchar(128)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="291" parent="280" name="ENABLED">
-      <Position>4</Position>
+    <column id="292" parent="280" name="ENABLED">
+      <Position>5</Position>
       <DataType>bit(1)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="292" parent="280" name="APP_USER_UK">
+    <index id="293" parent="280" name="APP_USER_UK">
       <ColNames>USER_NAME</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <key id="293" parent="280" name="PRIMARY">
+    <key id="294" parent="280" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>USER_ID</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="294" parent="280" name="APP_USER_UK">
+    <key id="295" parent="280" name="APP_USER_UK">
       <ColNames>USER_NAME</ColNames>
       <UnderlyingIndexName>APP_USER_UK</UnderlyingIndexName>
     </key>
-    <column id="295" parent="281" name="username">
+    <column id="296" parent="281" name="username">
       <Position>1</Position>
       <DataType>varchar(64)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="296" parent="281" name="series">
+    <column id="297" parent="281" name="series">
       <Position>2</Position>
       <DataType>varchar(64)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="297" parent="281" name="token">
+    <column id="298" parent="281" name="token">
       <Position>3</Position>
       <DataType>varchar(64)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="298" parent="281" name="last_used">
+    <column id="299" parent="281" name="last_used">
       <Position>4</Position>
       <DataType>timestamp|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="299" parent="281" name="PRIMARY">
+    <key id="300" parent="281" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>series</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="300" parent="282" name="ID">
+    <column id="301" parent="282" name="ID">
       <Position>1</Position>
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="301" parent="282" name="USER_ID">
+    <column id="302" parent="282" name="USER_ID">
       <Position>2</Position>
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="302" parent="282" name="ROLE_ID">
+    <column id="303" parent="282" name="ROLE_ID">
       <Position>3</Position>
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="303" parent="282" name="USER_ROLE_UK">
+    <index id="304" parent="282" name="USER_ROLE_UK">
       <ColNames>USER_ID
 ROLE_ID</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <index id="304" parent="282" name="USER_ROLE_FK2">
+    <index id="305" parent="282" name="USER_ROLE_FK2">
       <ColNames>ROLE_ID</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="305" parent="282" name="PRIMARY">
+    <key id="306" parent="282" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>ID</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="306" parent="282" name="USER_ROLE_UK">
+    <key id="307" parent="282" name="USER_ROLE_UK">
       <ColNames>USER_ID
 ROLE_ID</ColNames>
       <UnderlyingIndexName>USER_ROLE_UK</UnderlyingIndexName>
     </key>
-    <foreign-key id="307" parent="282" name="USER_ROLE_FK1">
+    <foreign-key id="308" parent="282" name="USER_ROLE_FK1">
       <ColNames>USER_ID</ColNames>
       <RefSchemaName>oocdb</RefSchemaName>
       <RefTableName>APP_USER</RefTableName>
       <RefColNames>USER_ID</RefColNames>
     </foreign-key>
-    <foreign-key id="308" parent="282" name="USER_ROLE_FK2">
+    <foreign-key id="309" parent="282" name="USER_ROLE_FK2">
       <ColNames>ROLE_ID</ColNames>
       <RefSchemaName>oocdb</RefSchemaName>
       <RefTableName>APP_ROLE</RefTableName>

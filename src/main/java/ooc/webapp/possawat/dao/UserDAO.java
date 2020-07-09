@@ -102,13 +102,13 @@ public class UserDAO extends JdbcDaoSupport {
 
     public void updateUser(AppUser user){
         /*
-        ? Remove user from both tables
+        ? Update
          */
 
-        String sqlForUpdate = "update APP_USER set USER_NAME = ? where USER_ID = ?";
+        String sqlForUpdate = "update APP_USER set USER_NAME = ?, USER_STATUS = ? where USER_ID = ?";
 //        String sqlForRemove2 = "delete from USER_ROLE where USER_ID = ?;";
         try{
-            Object[] params = new Object[]{ user.getUserName(), user.getUserId() };
+            Object[] params = new Object[]{ user.getUserName(), user.getStatus()  ,user.getUserId() };
             getJdbcTemplate().update(sqlForUpdate, params);
 //            getJdbcTemplate().update(sqlForRemove1, params);
         }catch(EmptyResultDataAccessException e){

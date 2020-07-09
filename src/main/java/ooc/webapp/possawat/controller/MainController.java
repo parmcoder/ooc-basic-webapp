@@ -20,16 +20,22 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class MainController {
 
+    /*
+     Just good services
+     */
+
     @Autowired
     IAdminService adminService;
 
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
+    private Boolean success=true;
+
     @RequestMapping(value = "/welcome", method = RequestMethod.GET)
     public String welcomePage(Model model) {
         model.addAttribute("title", "Welcome");
-        model.addAttribute("message", "This is welcome page!");
+        model.addAttribute("message", "This website is made by Parmcoder!");
         return "welcomePage";
     }
 
@@ -42,9 +48,22 @@ public class MainController {
         return "registration";
     }
 
+    @RequestMapping(value = "/registration/failed", method = RequestMethod.GET)
+    public String addUserFormFailed(Model model){
+        addUserForm(model);
+        if(!success){
+            model.addAttribute("errorMsg", "Try again! Your username is already taken.");
+        }
+        success = true;
+        return "registration";
+    }
+
     @PostMapping(value = "/registration")
-    public String addUserSubmit(@ModelAttribute AppUser user){
-        adminService.addNewUser(user);
+    public String addUserSubmit(@ModelAttribute AppUser user, Model model){
+        success = adminService.addNewUser(user);
+        if(!success){
+            return "redirect:registration/failed";
+        }
         return "redirect:admin";
     }
 
@@ -69,25 +88,26 @@ public class MainController {
     }
 
     @PostMapping(value = "/remove")
-    public String confirmRemoveClicked(@ModelAttribute("userRow") AppUser user){
-        adminService.removeUser(user);
+    public String confirmRemoveClicked(@ModelAttribute("userRow") AppUser user, Model model){
+        success = adminService.removeUser(user);
+
+        if(!success){
+            model.addAttribute("errorMsg", "Try again! That user is not existed.");
+        }
+
         return "redirect:admin";
     }
 
     @RequestMapping(value = { "/", "/login"}, method = RequestMethod.GET)
     public String loginPage(Model model, Principal principal) {
+        model.addAttribute("title", "Welcome");
+
         if (principal != null) {
             User loggedinUser = (User) ((Authentication) principal).getPrincipal();
             if(loggedinUser.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) return "redirect:admin";
             else return "redirect:userInfo";
         }
         return "loginPage";
-    }
-
-    @RequestMapping(value = "/logoutSuccessful", method = RequestMethod.GET)
-    public String logoutSuccessfulPage(Model model) {
-        model.addAttribute("title", "Logout");
-        return "logoutSuccessfulPage";
     }
 
     @RequestMapping(value = "/userInfo", method = RequestMethod.GET)
@@ -104,14 +124,34 @@ public class MainController {
         model.addAttribute("userInfo", userInfo);
 
         AppUser editUser = new AppUser();
-        model.addAttribute("newUserName", editUser);
+        model.addAttribute("newUserData", editUser);
+
+        AppUser currentUser = adminService.getCurrentInfo(userName);
+        model.addAttribute("currentUser", currentUser);
 
         return "userInfoPage";
     }
 
+    @RequestMapping(value = "/userInfo/failed", method = RequestMethod.GET)
+    public String userInfoFailed(Model model, Principal principal) {
+        // After user login successfully.
+        userInfo(model,principal);
+        if(!success){
+            model.addAttribute("errorMsg", "Try again! Your username is not available.");
+        }
+        success = true;
+        return "userInfoPage";
+    }
+
     @PostMapping(value = "/userInfo")
-    public String updateUserInfo(@ModelAttribute("newUserName") AppUser userName, Principal principal) {
-        adminService.changeUserName(principal.getName(), userName);
+    public String updateUserInfo(@ModelAttribute("newUserData") AppUser user, Principal principal, Model model) {
+        success = adminService.updateUserInfo(principal.getName(), user);
+        if(user.getUserName().isEmpty()){
+            return "redirect:userInfo";
+        }
+        if(!success){
+            return "redirect:userInfo/failed";
+        }
         return "redirect:logout";
     }
 

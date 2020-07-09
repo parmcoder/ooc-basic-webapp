@@ -7,11 +7,14 @@ import java.util.List;
 public interface IAdminService {
     List<AppUser> findAll();
 
-    void removeUser(AppUser user);
+    Boolean removeUser(AppUser user);
 
     Boolean checkExistedUser(AppUser user);
 
-    void addNewUser(AppUser user);
+    Boolean addNewUser(AppUser user);
 
-    void changeUserName(String userName, AppUser user);
+    Boolean updateUserInfo(String userName, AppUser user);
+
+    AppUser getCurrentInfo(String username);
+
 }
