@@ -28,9 +28,16 @@ public class AppExceptionHandler implements WebMvcConfigurer {
      * Simply add a custom error page for 404
      */
     @Bean
-    public WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> containerCustomizer() {
+    public WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> customize404() {
         return container -> {
             container.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND,"/"));
+        };
+    }
+
+    @Bean
+    public WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> userCustomize404() {
+        return container -> {
+            container.addErrorPages(new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR,"/"));
         };
     }
 

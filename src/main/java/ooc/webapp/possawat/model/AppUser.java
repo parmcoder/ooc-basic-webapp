@@ -12,6 +12,12 @@ public class AppUser {
     private String userName;
     private String encryptedPassword;
 
+    /*
+    ? might add another attributes here
+    ? status(varchar 200)
+     */
+
+
     public AppUser() {
 
     }
