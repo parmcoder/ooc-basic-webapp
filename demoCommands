@@ -1,0 +1,9 @@
+sudo cat /etc/ssh/sshd_config
+
+sudo ufw status numbered
+
+sudo fail2ban-client status
+
+sysctl -n net.ipv4.tcp_syncookies
+
+timedatectl status

@@ -22,7 +22,6 @@
         <td th:text="${appUser.getUserId()}"></td>
         <td th:text="${appUser.getUserName()}"></td>
 
-        <!-- Something is wrong here. -->
         <td>
             <form action="#" th:action="@{/remove}" th:object="${userRow}" method="get">
                 <input type="hidden" name="userId" th:value="${appUser.getUserId()}">
@@ -35,7 +34,8 @@
     </tr>
 </table>
 <br/><br/>
-<a href='/registration'><button>Add user</button></a>
+<a href='/registration'><button>Add User</button></a>
+
 
 <div th:if="${userInfo != null}" th:utext="${userInfo}"></div>
 

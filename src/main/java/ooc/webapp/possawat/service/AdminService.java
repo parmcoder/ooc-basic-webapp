@@ -30,6 +30,15 @@ public class AdminService implements IAdminService {
     }
 
     @Override
+    public Boolean addNewAdmin(AppUser user) {
+        if(checkExistedUser(user)){
+            return false;
+        }
+        user.setEncryptedPassword(EncryptorUtils.encryptPassword(user.getEncryptedPassword()));
+        this.UserDAO.insertUser(user,1);
+        return true;    }
+
+    @Override
     public Boolean updateUserInfo(String userName, AppUser user) {
         Boolean result = true;
         AppUser appUser = this.UserDAO.findUserAccount(userName);

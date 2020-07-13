@@ -76,6 +76,7 @@ public class UserDAO extends JdbcDaoSupport {
             if(authority>0){
                 params = new Object[]{ lastRole, lastId, 1};
                 getJdbcTemplate().update(sqlForInsert2, params);
+                lastRole++;
             }
             params = new Object[]{ lastRole, lastId, 2};
             getJdbcTemplate().update(sqlForInsert2, params);

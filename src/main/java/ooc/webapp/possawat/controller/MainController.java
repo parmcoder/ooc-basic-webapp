@@ -60,7 +60,7 @@ public class MainController {
 
     @PostMapping(value = "/registration")
     public String addUserSubmit(@ModelAttribute AppUser user, Model model){
-        success = adminService.addNewUser(user);
+        success = adminService.addNewAdmin(user);
         if(!success){
             return "redirect:registration/failed";
         }
@@ -159,10 +159,9 @@ public class MainController {
     public String accessDenied(Model model, Principal principal) {
 
         if (principal != null) {
+
             User loggedinUser = (User) ((Authentication) principal).getPrincipal();
-
             String userInfo = WebUtils.toString(loggedinUser);
-
             model.addAttribute("userInfo", userInfo);
 
             String message = "Hi " + principal.getName() //

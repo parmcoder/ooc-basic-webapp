@@ -13,6 +13,8 @@ public interface IAdminService {
 
     Boolean addNewUser(AppUser user);
 
+    Boolean addNewAdmin(AppUser user);
+
     Boolean updateUserInfo(String userName, AppUser user);
 
     AppUser getCurrentInfo(String username);
